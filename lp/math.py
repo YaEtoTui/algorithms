@@ -6,12 +6,7 @@ from input_data import c, a, b, A, j, Y
 # Создание объекта данных
 data_list = [DataObject(c_j, a_j, b_j, A_jc, j_i, y_j) for c_j, a_j, b_j, A_jc, j_i, y_j in zip(c, a, b, A, j, Y)]
 
-# Погрешность
-infelicity = 0.5
-data_filter_list = [data for data in data_list if (8 - infelicity <= data.A <= 9 + infelicity)
-                    and ((data.Y is not None) and (17 - infelicity <= data.Y <= 19 + infelicity))
-                    ]
-
+infelicity = 0.5 # Погрешность
 
 def find_solution():
     # Создание задачи минимизации
@@ -32,10 +27,8 @@ def find_solution():
     for data in data_filter_list:
         if data.a is not None:
             problem += data.x <= data.a
-            print(data.a)
         if data.b is not None:
             problem += data.x >= data.b
-            print(data.b)
 
     # Решение задачи
     problem.solve()
@@ -54,7 +47,17 @@ def find_solution():
     print("sum(x) =", test_x_sum)
 
 
+data_filter_list = [data for data in data_list if (8 - infelicity <= data.A <= 9 + infelicity)
+                    and ((data.Y is not None) and (17 - infelicity <= data.Y <= 18 + infelicity))
+                    ]
 if not data_filter_list:
-    print("Решений нет")
+    print("Решений нет при 17 <= Y <= 18\n")
+    data_filter_list = [data for data in data_list if (8 - infelicity <= data.A <= 9 + infelicity)
+                        and ((data.Y is not None) and (7 - infelicity <= data.Y <= 14 + infelicity))
+                        ]
+    if not data_filter_list:
+        print("Решений нет при 7 <= Y <= 14")
+    else:
+        find_solution()
 else:
     find_solution()
