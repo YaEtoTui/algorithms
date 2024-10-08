@@ -1,12 +1,10 @@
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus, value
 
 from data_object import DataObject
-from input_data import c, a, b, A, j, Y
+from input_data import c, a, b, A, j, Y, brand, K, K_2, J, G, OC, CC
 
 # Создание объекта данных
-data_list = [DataObject(c_j, a_j, b_j, A_jc, j_i, y_j) for c_j, a_j, b_j, A_jc, j_i, y_j in zip(c, a, b, A, j, Y)]
-
-infelicity = 0.5 # Погрешность
+data_list = [DataObject(c_j, a_j, b_j, A_jc, j_i, y_j, brand_j) for c_j, a_j, b_j, A_jc, j_i, y_j, brand_j in zip(c, a, b, A, j, Y, brand)]
 
 def find_solution():
     # Создание задачи минимизации
@@ -40,13 +38,12 @@ def find_solution():
     print("Оптимальные переменные:")
     test_x_sum = 0
     for v in problem.variables():
-        if v.varValue != 0:
-            test_x_sum += v.varValue
-            print(f"{v.name} = {v.varValue}")
+        test_x_sum += v.varValue
+        print(f"{v.name} = {v.varValue}")
     print("============================")
     print("sum(x) =", test_x_sum)
 
-
+infelicity = 0.5 # Погрешность
 data_filter_list = [data for data in data_list if (8 - infelicity <= data.A <= 9 + infelicity)
                     and ((data.Y is not None) and (17 - infelicity <= data.Y <= 18 + infelicity))
                     ]
