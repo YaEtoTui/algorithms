@@ -1,4 +1,4 @@
-from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus, value
+from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus, value, LpBinary
 
 from data_object import DataObject
 from input_data import c, a, b, A, j, Y, brand, K, K_2, J, G, OC, CC
@@ -28,6 +28,26 @@ def find_solution(data_list):
         if data.b is not None:
             problem += data.x >= data.b
 
+    # Бинарные переменные для выбора варианта
+    V_1 = LpVariable("V_1", cat=LpBinary)
+    V_2 = LpVariable("V_2", cat=LpBinary)
+    V_3 = LpVariable("V_3", cat=LpBinary)
+
+    # Ограничения на выбор одного варианта
+    problem += V_1 + V_2 + V_3 == 1
+
+    # Ограничения на марки угля для каждого варианта
+    k_j_vars = [data.x for data in data_list if data.brand in [K, J]]
+    g_oc_ss_vars = [data.x for data in data_list if data.brand in [G, OC, CC]]
+
+    problem += lpSum(k_j_vars) == 0.5 * V_1 + 0.2 * V_2 + 0.1 * V_3
+    problem += lpSum(g_oc_ss_vars) == 0.5 * V_1 + 0.8 * V_2 + 0.9 * V_3
+
+    # # Ограничения для случаев, когда нет решений
+    # problem += lpSum([data.x for data in data_list if data.brand in [K]]) == 0.5 * V_1
+    # problem += lpSum([data.x for data in data_list if data.brand in [J]]) == 0.5 * V_1
+    # problem += lpSum([data.x for data in data_list if data.brand in [OC, CC]]) == 0.5 * V_1
+
     # Решение задачи
     problem.solve()
 
@@ -36,12 +56,13 @@ def find_solution(data_list):
     print("============================")
     print(f"Оптимальная стоимость: {value(problem.objective)}")
     print("Оптимальные переменные:")
-    test_x_sum = 0
+    x_sum = 0
     for v in problem.variables():
-        test_x_sum += v.varValue
+        if v.name.__contains__("x"):
+            x_sum += v.varValue
         print(f"{v.name} = {v.varValue}")
     print("============================")
-    print("sum(x) =", test_x_sum)
+    print("sum(x) =", x_sum)
 
 infelicity = 0.5 # Погрешность
 data_filter_list = [data for data in data_list if (8 - infelicity <= data.A <= 9 + infelicity)
