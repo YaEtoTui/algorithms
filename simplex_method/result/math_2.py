@@ -1,8 +1,7 @@
-import numpy as np
 from scipy.optimize import linprog
 
 from lp.data_object import DataObject
-from lp.input_data import c, a, b, A, j, Y, brand, K, K_2, J, G, OC, CC
+from lp.input_data import c, a, b, A, j, Y, brand
 
 # Создание объекта данных
 data_list = [DataObject(c_j, a_j, b_j, A_jc, j_i, y_j, brand_j) for c_j, a_j, b_j, A_jc, j_i, y_j, brand_j in zip(c, a, b, A, j, Y, brand)]
@@ -70,7 +69,7 @@ def find_solution(data_list):
     x_sum = 0
     for i, x in enumerate(result.x):
         x_sum += x
-        print(f"x{i+1} = {x}")
+        print(f"x{data_list[i].j} = {x}")
     print("============================")
     print("sum(x) =", x_sum)
 

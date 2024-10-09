@@ -1,7 +1,7 @@
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus, value, LpBinary
 
 from data_object import DataObject
-from input_data import c, a, b, A, j, Y, brand, K, K_2, J, G, OC, CC
+from input_data import c, a, b, A, j, Y, brand, K, J, G, OC, CC
 
 # Создание объекта данных
 data_list = [DataObject(c_j, a_j, b_j, A_jc, j_i, y_j, brand_j) for c_j, a_j, b_j, A_jc, j_i, y_j, brand_j in zip(c, a, b, A, j, Y, brand)]
