@@ -28,20 +28,20 @@ def find_solution(data_list):
         if data.b is not None:
             problem += data.x >= data.b
 
-    # Бинарные переменные для выбора варианта
-    V_1 = LpVariable("V_1", cat=LpBinary)
-    V_2 = LpVariable("V_2", cat=LpBinary)
-    V_3 = LpVariable("V_3", cat=LpBinary)
-
-    # Ограничения на выбор одного варианта
-    problem += V_1 + V_2 + V_3 == 1
-
-    # Ограничения на марки угля для каждого варианта
-    k_j_vars = [data.x for data in data_list if data.brand in [K, J]]
-    g_oc_ss_vars = [data.x for data in data_list if data.brand in [G, OC, CC]]
-
-    problem += lpSum(k_j_vars) == 0.5 * V_1 + 0.2 * V_2 + 0.1 * V_3
-    problem += lpSum(g_oc_ss_vars) == 0.5 * V_1 + 0.8 * V_2 + 0.9 * V_3
+    # # Бинарные переменные для выбора варианта
+    # V_1 = LpVariable("V_1", cat=LpBinary)
+    # V_2 = LpVariable("V_2", cat=LpBinary)
+    # V_3 = LpVariable("V_3", cat=LpBinary)
+    #
+    # # Ограничения на выбор одного варианта
+    # problem += V_1 + V_2 + V_3 == 1
+    #
+    # # Ограничения на марки угля для каждого варианта
+    # k_j_vars = [data.x for data in data_list if data.brand in [K, J]]
+    # g_oc_ss_vars = [data.x for data in data_list if data.brand in [G, OC, CC]]
+    #
+    # problem += lpSum(k_j_vars) == 0.5 * V_1 + 0.2 * V_2 + 0.1 * V_3
+    # problem += lpSum(g_oc_ss_vars) == 0.5 * V_1 + 0.8 * V_2 + 0.9 * V_3
 
     # # Ограничения для случаев, когда нет решений
     # problem += lpSum([data.x for data in data_list if data.brand in [K]]) == 0.5 * V_1
