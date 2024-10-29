@@ -63,38 +63,6 @@ def f4(x):
     else:
         return 0
 
-def f5(x):
-    if x == 0:
-        return 0
-    elif x == 40:
-        return 7
-    elif x == 80:
-        return 8
-    elif x == 120:
-        return 11
-    elif x == 160:
-        return 11
-    elif x == 200:
-        return 11
-    else:
-        return 0
-
-def f6(x):
-    if x == 0:
-        return 0
-    elif x == 40:
-        return 5
-    elif x == 80:
-        return 9
-    elif x == 120:
-        return 12
-    elif x == 160:
-        return 13
-    elif x == 200:
-        return 13
-    else:
-        return 0
-
 # Функция для вычисления максимального дохода
 def max_profit(n, total_funds, functions):
     # Инициализация таблицы для хранения максимального дохода
@@ -122,8 +90,8 @@ def max_profit(n, total_funds, functions):
 
 # Основные параметры
 total_funds = 200
-n = 6
-functions = [f1, f2, f3, f4, f5, f6]
+n = 4
+functions = [f1, f2, f3, f4]
 
 # Вычисление максимального дохода и оптимального распределения
 max_profit_value, allocation = max_profit(n, total_funds, functions)
